@@ -20,7 +20,7 @@ import {
 import { Rocket, Settings, ArrowRight } from "lucide-react";
 
 const data = {
-	versions: ["1.0.3", "0.1.2-alpha.0"],
+	versions: ["1.0.3"],
 	navMain: [
 		{
 			title: "Getting Started",
