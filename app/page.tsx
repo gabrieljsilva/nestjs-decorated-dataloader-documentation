@@ -50,52 +50,21 @@ export default function Page() {
 						<section id="graphql" className="space-y-4">
 							<h2 className="text-3xl font-bold">GraphQL</h2>
 							<p>
-								GraphQL is a powerful query language for APIs that enables
-								clients to request only the data they need. It allows for
-								flexible queries and reduces the need for multiple endpoints
-								compared to traditional REST. However, because GraphQL resolvers
-								are typically independent functions, inefficient patterns such
-								as the N+1 problem can occur if related data is fetched
-								separately for each field. This challenge has paved the way for
-								strategies and tools that optimize data fetching, ensuring that
-								even complex nested queries remain efficient.
+								GraphQL is a query language for APIs that lets clients ask for exact data they need, avoiding unnecessary information. Unlike traditional REST APIs (which require multiple endpoints for different resources), GraphQL uses a single endpoint with flexible queries. However, because each field in a query is handled by separate functions (resolvers), it can lead to the N+1 problem: fetching related data (like posts and their authors) might trigger separate database calls for each item, causing inefficiency. To fix this, developers use strategies and tools to optimize data fetching, even for complex nested queries.
 							</p>
 						</section>
 
 						<section id="dataloaders" className="space-y-4">
 							<h2 className="text-3xl font-bold">Dataloaders</h2>
 							<p>
-								DataLoaders are a utility designed to address common performance
-								issues in GraphQL—most notably the N+1 problem. They work by
-								batching and caching database or service requests so that
-								multiple similar requests can be consolidated into a single
-								call. When a resolver requests related data, a DataLoader
-								collects all the keys during the same event loop tick and then
-								makes one bulk request. This not only minimizes the number of
-								round-trips but also improves overall efficiency by caching
-								previously fetched results. The DataLoader pattern has become an
-								essential tool in the GraphQL ecosystem, streamlining data
-								access and ensuring that applications scale gracefully.
+								dataloaders solve performance issues in GraphQL, especially the N+1 problem. They work by batching (grouping) and caching requests. For example: if multiple resolvers ask for user data (like post authors), the dataloader collects all required IDs in one processing cycle and makes a single database query instead of one per ID. It also caches results to avoid repeats. This reduces the number of requests and speeds up the API, making dataloaders essential for scalable GraphQL apps.
 							</p>
 						</section>
 
 						<section id="nestjs" className="space-y-4">
 							<h2 className="text-3xl font-bold">NestJS</h2>
 							<p>
-								NestJS is a progressive Node.js framework that excels in
-								building scalable and maintainable server-side applications. It
-								provides built-in support for GraphQL, allowing developers to
-								leverage schemas, resolvers, and dependency injection in a
-								structured way. When integrating GraphQL with NestJS,
-								DataLoaders are commonly used to batch and cache data fetching
-								within resolvers. However, one recurring pain point developers
-								encounter is the need to create a new DataLoader file for each
-								relationship. This repetitive setup can lead to boilerplate code
-								and increased maintenance overhead, as every new relationship in
-								your GraphQL schema might require its own dedicated loader.
-								Despite this minor inconvenience, NestJS's modular architecture
-								and robust tooling continue to make it a top choice for building
-								complex, high-performance APIs.
+								NestJS is a Node.js framework for building organized, scalable apps. It has built-in GraphQL support, letting developers define schemas, resolvers, and use dependency injection for clean code structure. To optimize queries, developers often use dataloaders in resolvers. However, a common challenge is needing to create a separate dataloader for every data relationship (e.g., one for users, another for posts). This leads to repetitive code and complexity in large projects. Despite this, NestJS's modular architecture and powerful tools make it a top choice for building complex, high-performance APIs.
 							</p>
 						</section>
 

@@ -6,6 +6,9 @@ import { Footer } from '@/components/footer';
 export const metadata: Metadata = {
   title: 'Nestjs Decorated Dataloaders',
   description: 'Documentation for nestjs-decorated-dataloaders package',
+  icons: {
+    icon: '/white-rabbit.svg',
+  },
 };
 
 export default function RootLayout({
