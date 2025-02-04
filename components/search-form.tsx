@@ -19,20 +19,20 @@ import {
 import { useRouter } from "next/navigation";
 
 function highlightMatch(text: string, query: string): React.ReactNode {
-  const index = text.toLowerCase().indexOf(query.toLowerCase());
-  if (index === -1) return text;
+	const index = text.toLowerCase().indexOf(query.toLowerCase());
+	if (index === -1) return text;
 
-  const before = text.slice(0, index);
-  const match = text.slice(index, index + query.length);
-  const after = text.slice(index + query.length);
+	const before = text.slice(0, index);
+	const match = text.slice(index, index + query.length);
+	const after = text.slice(index + query.length);
 
-  return (
-    <>
-      {before}
-      <span className="bg-yellow-200 dark:bg-yellow-800">{match}</span>
-      {after}
-    </>
-  );
+	return (
+		<>
+			{before}
+			<span className="bg-yellow-200 dark:bg-yellow-800">{match}</span>
+			{after}
+		</>
+	);
 }
 
 interface NavItem {
@@ -191,22 +191,24 @@ export function SearchForm({
 					).map(([section, items]) => (
 						<CommandGroup key={section} heading={section}>
 							{items.map((result) => (
-                <CommandItem
-                  key={result.url}
-                  onSelect={() => handleSelect(result)}
-                >
-                  <Search className="mr-2 h-4 w-4" />
-                  <div className="flex flex-col gap-1">
-                    <span>
-                      {searchTerm ? highlightMatch(result.title, searchTerm) : result.title}
-                    </span>
-                    {searchTerm && result.content && (
-                      <span className="text-sm text-muted-foreground line-clamp-1">
-                        {highlightMatch(result.content, searchTerm)}
-                      </span>
-                    )}
-                  </div>
-                </CommandItem>
+								<CommandItem
+									key={result.url}
+									onSelect={() => handleSelect(result)}
+								>
+									<Search className="mr-2 h-4 w-4" />
+									<div className="flex flex-col gap-1">
+										<span>
+											{searchTerm
+												? highlightMatch(result.title, searchTerm)
+												: result.title}
+										</span>
+										{searchTerm && result.content && (
+											<span className="text-sm text-muted-foreground line-clamp-1">
+												{highlightMatch(result.content, searchTerm)}
+											</span>
+										)}
+									</div>
+								</CommandItem>
 							))}
 						</CommandGroup>
 					))}

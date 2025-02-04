@@ -1,6 +1,5 @@
 "use client";
 
-import * as React from "react";
 import { Check, ChevronsUpDown, Rabbit } from "lucide-react";
 
 import {
@@ -14,6 +13,7 @@ import {
 	SidebarMenuButton,
 	SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { useState } from "react";
 
 export function VersionSwitcher({
 	versions,
@@ -22,7 +22,7 @@ export function VersionSwitcher({
 	versions: string[];
 	defaultVersion: string;
 }) {
-	const [selectedVersion, setSelectedVersion] = React.useState(defaultVersion);
+	const [selectedVersion, setSelectedVersion] = useState(defaultVersion);
 
 	return (
 		<SidebarMenu>
