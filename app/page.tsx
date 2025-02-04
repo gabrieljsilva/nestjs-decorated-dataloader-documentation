@@ -50,21 +50,47 @@ export default function Page() {
 						<section id="graphql" className="space-y-4">
 							<h2 className="text-3xl font-bold">GraphQL</h2>
 							<p>
-								GraphQL is a query language for APIs that lets clients ask for exact data they need, avoiding unnecessary information. Unlike traditional REST APIs (which require multiple endpoints for different resources), GraphQL uses a single endpoint with flexible queries. However, because each field in a query is handled by separate functions (resolvers), it can lead to the N+1 problem: fetching related data (like posts and their authors) might trigger separate database calls for each item, causing inefficiency. To fix this, developers use strategies and tools to optimize data fetching, even for complex nested queries.
+								GraphQL is a query language for APIs that lets clients ask for
+								exact data they need, avoiding unnecessary information. Unlike
+								traditional REST APIs (which require multiple endpoints for
+								different resources), GraphQL uses a single endpoint with
+								flexible queries. However, because each field in a query is
+								handled by separate functions (resolvers), it can lead to the
+								N+1 problem: fetching related data (like posts and their
+								authors) might trigger separate database calls for each item,
+								causing inefficiency. To fix this, developers use strategies and
+								tools to optimize data fetching, even for complex nested
+								queries.
 							</p>
 						</section>
 
 						<section id="dataloaders" className="space-y-4">
 							<h2 className="text-3xl font-bold">Dataloaders</h2>
 							<p>
-								dataloaders solve performance issues in GraphQL, especially the N+1 problem. They work by batching (grouping) and caching requests. For example: if multiple resolvers ask for user data (like post authors), the dataloader collects all required IDs in one processing cycle and makes a single database query instead of one per ID. It also caches results to avoid repeats. This reduces the number of requests and speeds up the API, making dataloaders essential for scalable GraphQL apps.
+								dataloaders solve performance issues in GraphQL, especially the
+								N+1 problem. They work by batching (grouping) and caching
+								requests. For example: if multiple resolvers ask for user data
+								(like post authors), the dataloader collects all required IDs in
+								one processing cycle and makes a single database query instead
+								of one per ID. It also caches results to avoid repeats. This
+								reduces the number of requests and speeds up the API, making
+								dataloaders essential for scalable GraphQL apps.
 							</p>
 						</section>
 
 						<section id="nestjs" className="space-y-4">
 							<h2 className="text-3xl font-bold">NestJS</h2>
 							<p>
-								NestJS is a Node.js framework for building organized, scalable apps. It has built-in GraphQL support, letting developers define schemas, resolvers, and use dependency injection for clean code structure. To optimize queries, developers often use dataloaders in resolvers. However, a common challenge is needing to create a separate dataloader for every data relationship (e.g., one for users, another for posts). This leads to repetitive code and complexity in large projects. Despite this, NestJS's modular architecture and powerful tools make it a top choice for building complex, high-performance APIs.
+								NestJS is a Node.js framework for building organized, scalable
+								apps. It has built-in GraphQL support, letting developers define
+								schemas, resolvers, and use dependency injection for clean code
+								structure. To optimize queries, developers often use dataloaders
+								in resolvers. However, a common challenge is needing to create a
+								separate dataloader for every data relationship (e.g., one for
+								users, another for posts). This leads to repetitive code and
+								complexity in large projects. Despite this, NestJS's modular
+								architecture and powerful tools make it a top choice for
+								building complex, high-performance APIs.
 							</p>
 						</section>
 
