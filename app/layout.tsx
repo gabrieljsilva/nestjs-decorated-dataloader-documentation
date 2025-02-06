@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "../styles/globals.css";
 import { AppSidebar } from "@/components/app-sidebar";
+import { FloatingHeader } from "@/components/floating-header";
 import { Footer } from "@/components/footer";
 import { ThemeProvider } from "@/components/theme-provider";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
@@ -19,17 +20,18 @@ export default function RootLayout({ children }: Layout) {
 		<html lang="en" suppressHydrationWarning>
 			<body>
 				<ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-					<div className="flex min-h-screen flex-col">
-						<main className="flex-1 relative">
-							<SidebarProvider>
-								<AppSidebar />
+					<SidebarProvider>
+						<AppSidebar />
+						<div className="flex min-h-screen flex-col">
+							<main className="flex-1 relative">
+								<FloatingHeader />
 								<SidebarInset className="w-full px-4 sm:px-6 lg:px-8">
 									{children}
 								</SidebarInset>
-							</SidebarProvider>
-						</main>
-						<Footer />
-					</div>
+							</main>
+							<Footer />
+						</div>
+					</SidebarProvider>
 				</ThemeProvider>
 			</body>
 		</html>
