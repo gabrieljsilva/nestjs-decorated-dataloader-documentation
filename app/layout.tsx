@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import "../styles/globals.css";
-import { ThemeProvider } from "@/components/theme-provider";
-import { Footer } from "@/components/footer";
-import type { Layout } from "@/interfaces";
 import { AppSidebar } from "@/components/app-sidebar";
-import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
+import { Footer } from "@/components/footer";
+import { ThemeProvider } from "@/components/theme-provider";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import type { Layout } from "@/interfaces";
 
 export const metadata: Metadata = {
 	title: "Decorated Dataloaders",
@@ -20,10 +20,10 @@ export default function RootLayout({ children }: Layout) {
 			<body>
 				<ThemeProvider attribute="class" defaultTheme="system" enableSystem>
 					<div className="flex min-h-screen flex-col">
-						<main className="flex-1">
+						<main className="flex-1 relative">
 							<SidebarProvider>
 								<AppSidebar />
-								<SidebarInset>
+								<SidebarInset className="w-full px-4 sm:px-6 lg:px-8">
 									{children}
 								</SidebarInset>
 							</SidebarProvider>

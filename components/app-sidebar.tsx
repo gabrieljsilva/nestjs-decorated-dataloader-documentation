@@ -2,8 +2,6 @@
 
 import type * as React from "react";
 
-import { SearchForm } from "./search-form";
-import { VersionSwitcher } from "./version-switcher";
 import {
 	Sidebar,
 	SidebarContent,
@@ -15,9 +13,12 @@ import {
 	SidebarMenuButton,
 	SidebarMenuItem,
 	SidebarRail,
+	useSidebar,
 } from "@/components/ui/sidebar";
+import { SearchForm } from "./search-form";
+import { VersionSwitcher } from "./version-switcher";
 
-import { Rocket, Settings, ArrowRight } from "lucide-react";
+import { ArrowRight, Rocket, Settings } from "lucide-react";
 
 const data = {
 	versions: ["1.0.3"],
@@ -87,6 +88,8 @@ const data = {
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+	const { setOpenMobile } = useSidebar();
+
 	return (
 		<Sidebar {...props}>
 			<SidebarHeader>
@@ -109,7 +112,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 							<SidebarMenu>
 								{item.items.length > 0 ? (
 									item.items.map((subItem) => (
-										<SidebarMenuItem key={subItem.title}>
+										<SidebarMenuItem
+											onClick={() => setOpenMobile(false)}
+											key={subItem.title}
+										>
 											<SidebarMenuButton asChild>
 												<a href={subItem.url}>{subItem.title}</a>
 											</SidebarMenuButton>
