@@ -18,6 +18,7 @@ import {
 import { SearchForm } from "./search-form";
 import { VersionSwitcher } from "./version-switcher";
 
+import { FloatingHeader } from "@/components/floating-header";
 import { ArrowRight, Rocket, Settings } from "lucide-react";
 
 const data = {
@@ -91,49 +92,51 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 	const { setOpenMobile } = useSidebar();
 
 	return (
-		<Sidebar {...props}>
-			<SidebarHeader>
-				<VersionSwitcher
-					versions={data.versions}
-					defaultVersion={data.versions[0]}
-				/>
-				<SearchForm navMain={data.navMain} />
-			</SidebarHeader>
-			<SidebarContent>
-				{data.navMain.map((item) => (
-					<SidebarGroup key={item.title}>
-						<SidebarGroupLabel>
-							<span className="flex items-center">
-								{item.icon && <item.icon className="mr-2 h-4 w-4" />}
-								{item.title}
-							</span>
-						</SidebarGroupLabel>
-						<SidebarGroupContent>
-							<SidebarMenu>
-								{item.items.length > 0 ? (
-									item.items.map((subItem) => (
-										<SidebarMenuItem
-											onClick={() => setOpenMobile(false)}
-											key={subItem.title}
-										>
+		<>
+			<Sidebar {...props}>
+				<SidebarHeader>
+					<VersionSwitcher
+						versions={data.versions}
+						defaultVersion={data.versions[0]}
+					/>
+					<SearchForm navMain={data.navMain} />
+				</SidebarHeader>
+				<SidebarContent>
+					{data.navMain.map((item) => (
+						<SidebarGroup key={item.title}>
+							<SidebarGroupLabel>
+								<span className="flex items-center">
+									{item.icon && <item.icon className="mr-2 h-4 w-4" />}
+									{item.title}
+								</span>
+							</SidebarGroupLabel>
+							<SidebarGroupContent>
+								<SidebarMenu>
+									{item.items.length > 0 ? (
+										item.items.map((subItem) => (
+											<SidebarMenuItem
+												onClick={() => setOpenMobile(false)}
+												key={subItem.title}
+											>
+												<SidebarMenuButton asChild>
+													<a href={subItem.url}>{subItem.title}</a>
+												</SidebarMenuButton>
+											</SidebarMenuItem>
+										))
+									) : (
+										<SidebarMenuItem>
 											<SidebarMenuButton asChild>
-												<a href={subItem.url}>{subItem.title}</a>
+												<a href={item.url}>{item.title}</a>
 											</SidebarMenuButton>
 										</SidebarMenuItem>
-									))
-								) : (
-									<SidebarMenuItem>
-										<SidebarMenuButton asChild>
-											<a href={item.url}>{item.title}</a>
-										</SidebarMenuButton>
-									</SidebarMenuItem>
-								)}
-							</SidebarMenu>
-						</SidebarGroupContent>
-					</SidebarGroup>
-				))}
-			</SidebarContent>
-			<SidebarRail />
-		</Sidebar>
+									)}
+								</SidebarMenu>
+							</SidebarGroupContent>
+						</SidebarGroup>
+					))}
+				</SidebarContent>
+				<SidebarRail />
+			</Sidebar>
+		</>
 	);
 }
