@@ -16,8 +16,6 @@ import type * as React from "react";
 export default function Page() {
 	return (
 		<>
-			<FloatingHeader />
-
 			<div className="flex flex-1 flex-col gap-8 p-4 sm:px-6 md:px-8 lg:px-12 w-full">
 				<div className="space-y-8">
 					<section id="graphql" className="space-y-4">
