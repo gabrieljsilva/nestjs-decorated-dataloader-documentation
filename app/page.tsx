@@ -1,4 +1,3 @@
-import { AppSidebar } from "@/components/app-sidebar";
 import {
 	Breadcrumb,
 	BreadcrumbItem,
@@ -6,11 +5,7 @@ import {
 	BreadcrumbPage,
 } from "@/components/ui/breadcrumb";
 import { Separator } from "@/components/ui/separator";
-import {
-	SidebarInset,
-	SidebarProvider,
-	SidebarTrigger,
-} from "@/components/ui/sidebar";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 import { CodeBlock } from "@/components/code-block";
 import { InstallationCode } from "@/components/installation-code";
 import { ThemeSwitcher } from "@/components/theme-switcher";
@@ -18,38 +13,36 @@ import { SiGithub } from "@icons-pack/react-simple-icons";
 
 export default function Page() {
 	return (
-		<SidebarProvider>
-			<AppSidebar />
-			<SidebarInset>
-				<header className="flex h-16 shrink-0 items-center justify-between border-b px-4">
-					<div className="flex items-center gap-2">
-						<SidebarTrigger className="-ml-1" />
-						<Separator orientation="vertical" className="mr-2 h-4" />
-						<Breadcrumb>
-							<BreadcrumbList>
-								<BreadcrumbItem>
-									<BreadcrumbPage>Documentation</BreadcrumbPage>
-								</BreadcrumbItem>
-							</BreadcrumbList>
-						</Breadcrumb>
-					</div>
-					<div className="flex items-center gap-4">
-						<a
-							href="https://github.com/gabrieljsilva/nestjs-decorated-dataloaders"
-							target="_blank"
-							rel="noopener noreferrer"
-							className="text-foreground hover:text-foreground/80"
-						>
-							<SiGithub className="h-5 w-5" />
-						</a>
-						<ThemeSwitcher />
-					</div>
-				</header>
-				<div className="flex flex-1 flex-col gap-8 p-4 sm:px-6 md:px-8 lg:px-12 w-full">
-					<div className="space-y-8">
-						<section id="graphql" className="space-y-4">
-							<h2 className="text-3xl font-bold">GraphQL</h2>
-							<p>
+		<>
+			<header className="flex h-16 shrink-0 items-center justify-between border-b px-4">
+				<div className="flex items-center gap-2">
+					<SidebarTrigger className="-ml-1" />
+					<Separator orientation="vertical" className="mr-2 h-4" />
+					<Breadcrumb>
+						<BreadcrumbList>
+							<BreadcrumbItem>
+								<BreadcrumbPage>Documentation</BreadcrumbPage>
+							</BreadcrumbItem>
+						</BreadcrumbList>
+					</Breadcrumb>
+				</div>
+				<div className="flex items-center gap-4">
+					<a
+						href="https://github.com/gabrieljsilva/nestjs-decorated-dataloaders"
+						target="_blank"
+						rel="noopener noreferrer"
+						className="text-foreground hover:text-foreground/80"
+					>
+						<SiGithub className="h-5 w-5" />
+					</a>
+					<ThemeSwitcher />
+				</div>
+			</header>
+			<div className="flex flex-1 flex-col gap-8 p-4 sm:px-6 md:px-8 lg:px-12 w-full">
+				<div className="space-y-8">
+					<section id="graphql" className="space-y-4">
+						<h2 className="text-3xl font-bold">GraphQL</h2>
+						<p>
 								GraphQL is a query language for APIs that lets clients ask for
 								exact data they need, avoiding unnecessary information. Unlike
 								traditional REST APIs (which require multiple endpoints for
@@ -62,9 +55,9 @@ export default function Page() {
 								tools to optimize data fetching, even for complex nested
 								queries.
 							</p>
-						</section>
+					</section>
 
-						<section id="dataloaders" className="space-y-4">
+					<section id="dataloaders" className="space-y-4">
 							<h2 className="text-3xl font-bold">Dataloaders</h2>
 							<p>
 								dataloaders solve performance issues in GraphQL, especially the
@@ -396,7 +389,6 @@ export class ConcretePhotoService {}`}
 						</section>
 					</div>
 				</div>
-			</SidebarInset>
-		</SidebarProvider>
+		</>
 	);
 }
