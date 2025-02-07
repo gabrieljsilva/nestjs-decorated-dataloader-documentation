@@ -1,17 +1,4 @@
 import { CodeBlock } from "@/components/code-block";
-import { FloatingHeader } from "@/components/floating-header";
-import { InstallationCode } from "@/components/installation-code";
-import { ThemeSwitcher } from "@/components/theme-switcher";
-import {
-	Breadcrumb,
-	BreadcrumbItem,
-	BreadcrumbList,
-	BreadcrumbPage,
-} from "@/components/ui/breadcrumb";
-import { Separator } from "@/components/ui/separator";
-import { SidebarTrigger } from "@/components/ui/sidebar";
-import { SiGithub } from "@icons-pack/react-simple-icons";
-import type * as React from "react";
 
 export default function Page() {
 	return (
@@ -66,7 +53,7 @@ export default function Page() {
 
 					<section id="installation" className="space-y-4">
 						<h2 className="text-3xl font-bold">Installation</h2>
-						<InstallationCode packageName="nestjs-decorated-dataloaders" />
+						{/*<InstallationCode packageName="nestjs-decorated-dataloaders" />*/}
 					</section>
 
 					<section id="quick-start" className="space-y-4">
@@ -79,6 +66,7 @@ export default function Page() {
 								module:
 							</p>
 							<CodeBlock
+								filename="app.module.ts"
 								code={`import { Module } from "@nestjs/common";
 import { GraphQLModule } from "@nestjs/graphql";
 import { LRUMap } from "lru_map";
@@ -125,6 +113,7 @@ export class AppModule {}`}
 						<div className="space-y-4">
 							<h3 className="text-2xl font-semibold">PhotoEntity</h3>
 							<CodeBlock
+								filename="photo.entity.ts"
 								code={`export class PhotoEntity {
   id: number;
   url: string;
@@ -136,6 +125,7 @@ export class AppModule {}`}
 						<div className="space-y-4">
 							<h3 className="text-2xl font-semibold">UserEntity</h3>
 							<CodeBlock
+								filename="user.entity.ts"
 								code={`import { Load } from "nestjs-decorated-dataloaders";
 import { PhotoEntity } from "./photo.entity";
 
@@ -161,6 +151,7 @@ export class UserEntity {
 							<code>@DataloaderHandler</code> decorator.
 						</p>
 						<CodeBlock
+							filename="photo.service.ts"
 							code={`import { DataloaderHandler } from "nestjs-decorated-dataloaders";
 import { PhotoEntity } from "./photo.entity";
 
@@ -182,6 +173,7 @@ export class PhotoService {
 							entities, ensuring requests are batched and cached.
 						</p>
 						<CodeBlock
+							filename="user.resolver.ts"
 							code={`import { Resolver, ResolveField, Parent } from "@nestjs/graphql";
 import { DataloaderService } from "nestjs-decorated-dataloaders";
 import { UserEntity } from "./user.entity";
@@ -242,6 +234,7 @@ export class UserResolver {
 								introspection.
 							</p>
 							<CodeBlock
+								filename="entities.ts"
 								code={`import { Relation } from 'nestjs-decorated-dataloaders';
 
 class User {
@@ -306,6 +299,7 @@ class Photo {
 
 							<h4 className="text-xl font-semibold">Using Aliases</h4>
 							<CodeBlock
+								filename="photo.service.ts"
 								code={`@AliasFor(() => AbstractPhotoService)
 export class ConcretePhotoService {}`}
 							/>

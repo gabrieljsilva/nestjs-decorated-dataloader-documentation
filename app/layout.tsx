@@ -22,10 +22,10 @@ export default function RootLayout({ children }: Layout) {
 				<ThemeProvider attribute="class" defaultTheme="system" enableSystem>
 					<SidebarProvider>
 						<AppSidebar />
-						<div className="flex min-h-screen flex-col">
-							<main className="flex-1 relative">
+						<div className="flex min-h-screen flex-col overflow-hidden">
+							<main className="flex-1 relative overflow-hidden">
 								<FloatingHeader />
-								<SidebarInset className="w-full px-4 sm:px-6 lg:px-8">
+								<SidebarInset className="w-full px-4 sm:px-6 lg:px-8 overflow-x-hidden">
 									{children}
 								</SidebarInset>
 							</main>
