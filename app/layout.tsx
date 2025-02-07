@@ -10,10 +10,13 @@ import type { Layout } from "@/interfaces";
 export const metadata: Metadata = {
 	title: "Decorated Dataloaders",
 	description: "Documentation for nestjs-decorated-dataloaders package",
+	keywords: "NestJS, GraphQL, Dataloaders, TypeScript, API optimization, N+1 problem, nestjs-decorated-dataloaders",
+	authors: [{ name: "Gabriel de Jesus Silva" }],
 	icons: {
 		icon: "/white-rabbit.svg",
 	},
 };
+
 
 export default function RootLayout({ children }: Layout) {
 	return (
