@@ -1,7 +1,5 @@
 "use client";
 
-import type * as React from "react";
-
 import {
 	Sidebar,
 	SidebarContent,
@@ -15,10 +13,8 @@ import {
 	SidebarRail,
 	useSidebar,
 } from "@/components/ui/sidebar";
-import { SearchForm } from "./search-form";
 import { VersionSwitcher } from "./version-switcher";
 
-import { FloatingHeader } from "@/components/floating-header";
 import { ArrowRight, Rocket, Settings } from "lucide-react";
 
 const data = {
@@ -99,7 +95,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 						versions={data.versions}
 						defaultVersion={data.versions[0]}
 					/>
-					<SearchForm navMain={data.navMain} />
 				</SidebarHeader>
 				<SidebarContent>
 					{data.navMain.map((item) => (
