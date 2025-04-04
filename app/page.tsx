@@ -1,6 +1,45 @@
 import { CodeBlock } from "@/components/code-block";
+import { InstallationCode } from "@/components/installation-code";
+import { Badge } from "@/components/ui/badge";
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardHeader,
+	CardTitle,
+} from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import { Check } from "lucide-react";
 
 export default function Page() {
+	const features = [
+		{
+			title: "Dataloader declaration via decorators",
+			description:
+				"Simplify your code with clean decorator syntax for defining dataloaders",
+		},
+		{
+			title: "Efficient batching and caching",
+			description:
+				"Solve the N+1 problem by automatically batching requests and caching results",
+		},
+		{
+			title: "Custom configurations",
+			description:
+				"Fine-tune caching strategies, batch sizes, and other loader behaviors",
+		},
+		{
+			title: "Aliases for abstract classes",
+			description:
+				"Create flexible dataloader implementations with abstract class support",
+		},
+		{
+			title: "Circular dependency resolution",
+			description:
+				"Handle complex object relationships without circular dependency issues",
+		},
+	];
+
 	return (
 		<>
 			<div className="flex flex-1 flex-col gap-8 p-4 sm:px-6 md:px-8 lg:px-12 w-full">
@@ -51,9 +90,60 @@ export default function Page() {
 						</p>
 					</section>
 
+					<section
+						id="nestjs"
+						className="space-y-4 sm:space-y-6 py-4 sm:py-8 px-2 sm:px-0"
+					>
+						<div className="space-y-2">
+							<div className="flex flex-col sm:flex-row sm:items-center gap-2">
+								<h2 className="text-2xl sm:text-3xl font-bold tracking-tight">
+									NestJS Decorated Dataloaders
+								</h2>
+							</div>
+							<p className="text-muted-foreground text-base sm:text-lg">
+								A module that simplifies creating GraphQL dataloaders using
+								decorators
+							</p>
+						</div>
+
+						<Separator className="my-3 sm:my-4" />
+
+						<div className="space-y-3 sm:space-y-4">
+							<p className="text-sm sm:text-base leading-relaxed sm:leading-7">
+								NestJS Decorated Dataloaders solves the N+1 problem by batching
+								requests and caching results, optimizing queries and
+								streamlining NestJS integration. It offers declarative
+								configuration for caching, batch sizing, and dependency
+								management, making it easier to create efficient resolvers.
+							</p>
+
+							<h3 className="text-lg sm:text-xl font-semibold mt-4 sm:mt-6 mb-2 sm:mb-4">
+								Key Features
+							</h3>
+
+							<div className="grid grid-cols-1 gap-3 sm:gap-4 sm:grid-cols-2 lg:grid-cols-3">
+								{features.map((feature, index) => (
+									<Card key={feature.title} className="h-full">
+										<CardHeader className="pb-1 sm:pb-2 px-4 pt-4">
+											<CardTitle className="text-sm sm:text-base font-medium flex items-start gap-2">
+												<Check className="h-4 w-4 sm:h-5 sm:w-5 text-green-500 shrink-0 mt-0.5" />
+												<span>{feature.title}</span>
+											</CardTitle>
+										</CardHeader>
+										<CardContent className="px-4 pb-4 pt-0">
+											<CardDescription className="text-xs sm:text-sm">
+												{feature.description}
+											</CardDescription>
+										</CardContent>
+									</Card>
+								))}
+							</div>
+						</div>
+					</section>
+
 					<section id="installation" className="space-y-4">
 						<h2 className="text-3xl font-bold">Installation</h2>
-						{/*<InstallationCode packageName="nestjs-decorated-dataloaders" />*/}
+						<InstallationCode packageName="nestjs-decorated-dataloaders" />
 					</section>
 
 					<section id="quick-start" className="space-y-4">

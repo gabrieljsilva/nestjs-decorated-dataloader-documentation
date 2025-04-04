@@ -1,10 +1,10 @@
 "use client";
 
-import { Check, Copy } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { useClipboard } from "@/hooks/use-clipboard";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useClipboard } from "@/hooks/use-clipboard";
+import { cn } from "@/lib/utils";
+import { Check, Copy } from "lucide-react";
 
 interface InstallationCodeProps {
 	packageName: string;
@@ -14,7 +14,7 @@ interface InstallationCodeProps {
 const packageManagers = [
 	{ name: "npm", command: "npm install" },
 	{ name: "yarn", command: "yarn add" },
-	{ name: "pnpm", command: "pnpm add" },
+	{ name: "pnpm", command: "pnpm install" },
 ] as const;
 
 export function InstallationCode({
