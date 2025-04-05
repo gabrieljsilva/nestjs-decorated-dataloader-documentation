@@ -1,6 +1,5 @@
 import { CodeBlock } from "@/components/code-block";
 import { InstallationCode } from "@/components/installation-code";
-import { Badge } from "@/components/ui/badge";
 import {
 	Card,
 	CardContent,
@@ -122,7 +121,7 @@ export default function Page() {
 							</h3>
 
 							<div className="grid grid-cols-1 gap-3 sm:gap-4 sm:grid-cols-2 lg:grid-cols-3">
-								{features.map((feature, index) => (
+								{features.map((feature) => (
 									<Card key={feature.title} className="h-full">
 										<CardHeader className="pb-1 sm:pb-2 px-4 pt-4">
 											<CardTitle className="text-sm sm:text-base font-medium flex items-start gap-2">
