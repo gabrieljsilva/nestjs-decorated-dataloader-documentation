@@ -99,23 +99,14 @@ export default function Page() {
 									NestJS Decorated Dataloaders
 								</h2>
 							</div>
-							<p className="text-muted-foreground text-base sm:text-lg">
-								A module that simplifies creating GraphQL dataloaders using
-								decorators
+							<p className="text-sm sm:text-base leading-relaxed sm:leading-7">
+								A lightweight wrapper around Dataloader that lets you declare where to batch and cache instead of wiring it by hand. Add a @Load decorator to any field, register a handler, and the N+1 query problem is gone.
 							</p>
 						</div>
 
 						<Separator className="my-3 sm:my-4" />
 
 						<div className="space-y-3 sm:space-y-4">
-							<p className="text-sm sm:text-base leading-relaxed sm:leading-7">
-								NestJS Decorated Dataloaders solves the N+1 problem by batching
-								requests and caching results, optimizing queries and
-								streamlining NestJS integration. It offers declarative
-								configuration for caching, batch sizing, and dependency
-								management, making it easier to create efficient resolvers.
-							</p>
-
 							<h3 className="text-lg sm:text-xl font-semibold mt-4 sm:mt-6 mb-2 sm:mb-4">
 								Key Features
 							</h3>
@@ -287,6 +278,103 @@ export class UserResolver {
 
 					<section id="advanced-concepts" className="space-y-8">
 						<h2 className="text-3xl font-bold">Advanced Concepts</h2>
+
+						<div id="function-based-mapping" className="space-y-4">
+							<h3 className="text-2xl font-semibold">
+								Function-Based Mapper
+							</h3>
+							<p>
+								Function-Based Mapper allows you to use functions instead of string paths for the <code>key</code> and <code>parentKey</code> properties in the <code>@Load</code> decorator. This is particularly useful when you need to work with composite keys or when you need more complex mapping logic.
+							</p>
+							<CodeBlock
+								filename="post.entity.ts"
+								code={`import { Field, Int, ObjectType } from "@nestjs/graphql";
+import { Load } from "nestjs-decorated-dataloaders";
+import { CategoryPostEntity } from "./category-post.entity";
+import { CategoryEntity } from "./category.entity";
+
+@ObjectType()
+export class PostEntity {
+  @Field(() => Int)
+  id: number;
+
+  @Field(() => String)
+  title: string;
+
+  @Field(() => String)
+  content: string;
+
+  @Field(() => String)
+  createdAt: string;
+
+  // Relationship with CategoryPostEntity for the many-to-many relationship
+  categoryPosts: CategoryPostEntity[];
+
+  /**
+   * Using Function-Based Mapper for complex relationships
+   * This handles a many-to-many relationship through a join table
+   */
+  @Load(() => [CategoryEntity], {
+    key: (category) => category.id,
+    parentKey: (post) => post.categoryPosts.map((cp) => cp.postId),
+    handler: "LOAD_CATEGORY_BY_POSTS",
+  })
+  categories: CategoryEntity[];
+}`}
+							/>
+							<h4 className="text-xl font-semibold">Benefits of Function-Based Mapper</h4>
+							<ul className="list-disc pl-6 space-y-2">
+								<li>
+									<strong>Complex Mapping</strong>: You can implement complex mapping logic that goes beyond simple property access.
+								</li>
+								<li>
+									<strong>Composite Keys</strong>: You can create composite keys by combining multiple fields.
+								</li>
+								<li>
+									<strong>Flexibility</strong>: You can use any JavaScript expression to compute the key.
+								</li>
+								<li>
+									<strong>Performance</strong>: Function-based mappers are more CPU efficient compared to string-based mappers.
+								</li>
+							</ul>
+						</div>
+
+						<div id="type-safety" className="space-y-4">
+							<h3 className="text-2xl font-semibold">
+								Type Safety
+							</h3>
+							<p>
+								You can use TypeScript generics to ensure type safety when declaring a Dataloader field.
+							</p>
+							<CodeBlock
+								filename="user.entity.ts"
+								code={`import { Field, Int, ObjectType } from "@nestjs/graphql";
+import { Load } from "nestjs-decorated-dataloaders";
+import { PhotoEntity } from "./photo.entity";
+
+@ObjectType()
+export class UserEntity {
+  @Field(() => Int)
+  id: number;
+
+  @Field(() => String)
+  name: string;
+
+  @Field(() => Date)
+  createdAt: Date;
+
+  @Load<PhotoEntity, UserEntity>(() => [PhotoEntity], {
+    key: (user) => user.id,
+    parentKey: (photo) => photo.userId,
+    handler: "LOAD_PHOTOS_BY_USER",
+  })
+  photos: Array<PhotoEntity>;
+}`}
+							/>
+							<p>
+								In this example, the <code>key</code> function is typed to receive a <code>UserEntity</code> and the <code>parentKey</code> function is typed to receive a <code>PhotoEntity</code>.
+							</p>
+						</div>
 
 						<div id="handling-circular-dependencies" className="space-y-4">
 							<h3 className="text-2xl font-semibold">
