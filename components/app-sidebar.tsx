@@ -72,6 +72,14 @@ const data = {
 			icon: Settings,
 			items: [
 				{
+					title: "Function-Based Mapping",
+					url: "#function-based-mapping",
+				},
+				{
+					title: "Type-Safety",
+					url: "#type-safety",
+				},
+				{
 					title: "Handling Circular Dependencies",
 					url: "#handling-circular-dependencies",
 				},
