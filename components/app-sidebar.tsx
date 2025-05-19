@@ -18,7 +18,7 @@ import { VersionSwitcher } from "./version-switcher";
 import { ArrowRight, Rocket, Settings } from "lucide-react";
 
 const data = {
-	versions: ["1.0.4"],
+	versions: ["1.1.0"],
 	navMain: [
 		{
 			title: "Getting Started",
