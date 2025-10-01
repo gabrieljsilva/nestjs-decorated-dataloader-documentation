@@ -18,7 +18,7 @@ import { VersionSwitcher } from "./version-switcher";
 import { ArrowRight, Rocket, Settings } from "lucide-react";
 
 const data = {
-	versions: ["1.1.0"],
+	versions: ["1.1.1"],
 	navMain: [
 		{
 			title: "Getting Started",
@@ -61,7 +61,7 @@ const data = {
 					url: "#dataloader-handlers",
 				},
 				{
-					title: "Usage in resolvers",
+					title: "Using Dataloaders in Resolvers",
 					url: "#using-dataloaders",
 				},
 			],
@@ -72,11 +72,11 @@ const data = {
 			icon: Settings,
 			items: [
 				{
-					title: "Function-Based Mapping",
-					url: "#function-based-mapping",
+					title: "Function-Based Mapper",
+					url: "#function-based-mapper",
 				},
 				{
-					title: "Type-Safety",
+					title: "Type Safety",
 					url: "#type-safety",
 				},
 				{
@@ -86,6 +86,10 @@ const data = {
 				{
 					title: "Aliases",
 					url: "#aliases",
+				},
+				{
+					title: "Under the Hood",
+					url: "#under-the-hood",
 				},
 			],
 		},

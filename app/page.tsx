@@ -145,45 +145,42 @@ export default function Page() {
 								Configure the <code>DataloaderModule</code> in your application
 								module:
 							</p>
-							<CodeBlock
-								filename="app.module.ts"
-								code={`import { Module } from "@nestjs/common";
-import { GraphQLModule } from "@nestjs/graphql";
-import { LRUMap } from "lru_map";
-import { DataloaderModule } from "nestjs-decorated-dataloaders";
+  					<CodeBlock
+  						filename="app.module.ts"
+  						code={`import { Module } from "@nestjs/common";
+  import { GraphQLModule } from "@nestjs/graphql";
+  import { LRUMap } from "lru_map";
+  import { DataloaderModule } from "nestjs-decorated-dataloaders";
 
-@Module({
-  imports: [
-    GraphQLModule.forRoot({
-      autoSchemaFile: true,
-    }),
-    DataloaderModule.forRoot({
-      cache: true,
-      maxBatchSize: 100,
-      getCacheMap: () => new LRUMap(100),
-      name: "MyAwesomeDataloader",
-    }),
-  ],
-})
-export class AppModule {}`}
-							/>
-							<ul className="list-disc pl-6 space-y-2">
-								<li>
-									<strong>cache</strong>: Enables caching.
-								</li>
-								<li>
-									<strong>maxBatchSize</strong>: Limits the maximum number of
-									batched requests.
-								</li>
-								<li>
-									<strong>getCacheMap</strong>: Defines a custom cache
-									implementation (e.g., LRU Cache).
-								</li>
-								<li>
-									<strong>name</strong>: Names the dataloader for better
-									tracking and debugging.
-								</li>
-							</ul>
+  @Module({
+    imports: [
+      GraphQLModule.forRoot({
+        autoSchemaFile: true,
+      }),
+      DataloaderModule.forRoot({
+          name: "MyAwesomeDataloader",
+          cache: true,
+          maxBatchSize: 100,
+          getCacheMap: () => new LRUMap(100),
+      }),
+    ],
+  })
+  export class AppModule {}`}
+  					/>
+ 						<ul className="list-disc pl-6 space-y-2">
+ 							<li>
+ 								<strong>name</strong>: Names the dataloader for better tracking and debugging.
+ 							</li>
+ 							<li>
+ 								<strong>cache</strong>: Enables caching.
+ 							</li>
+ 							<li>
+ 								<strong>maxBatchSize</strong>: Limits the maximum number of batched requests.
+ 							</li>
+ 							<li>
+ 								<strong>getCacheMap</strong>: Defines a custom cache implementation (e.g., LRU Cache).
+ 							</li>
+ 						</ul>
 						</div>
 					</section>
 
@@ -192,35 +189,67 @@ export class AppModule {}`}
 
 						<div className="space-y-4">
 							<h3 className="text-2xl font-semibold">PhotoEntity</h3>
-							<CodeBlock
-								filename="photo.entity.ts"
-								code={`export class PhotoEntity {
-  id: number;
-  url: string;
-  userId: number;
-}`}
-							/>
-						</div>
+ 						<CodeBlock
+ 							filename="photo.entity.ts"
+ 							code={`import { Field, Int, ObjectType } from "@nestjs/graphql";
+ import { Load } from "nestjs-decorated-dataloaders";
+ import { UserEntity } from "./user.entity";
+
+ @ObjectType()
+ export class PhotoEntity {
+   @Field(() => Int)
+   id: number;
+
+   @Field(() => String)
+   url: string;
+
+   @Field(() => Number)
+   userId: number;
+ }`}
+ 						/>
+ 					</div>
 
 						<div className="space-y-4">
 							<h3 className="text-2xl font-semibold">UserEntity</h3>
-							<CodeBlock
-								filename="user.entity.ts"
-								code={`import { Load } from "nestjs-decorated-dataloaders";
-import { PhotoEntity } from "./photo.entity";
+ 						<CodeBlock
+ 							filename="user.entity.ts"
+ 							code={`import { Field, Int, ObjectType } from "@nestjs/graphql";
+ import { Load } from "nestjs-decorated-dataloaders";
+ import { PhotoEntity } from "./photo.entity";
 
-export class UserEntity {
-  id: number;
-  name: string;
+ @ObjectType()
+ export class UserEntity {
+   @Field(() => Int)
+   id: number;
 
-  @Load(() => PhotoEntity, { key: "id", parentKey: "userId", handler: "LOAD_PHOTOS_BY_USER_ID" })
-  photo: PhotoEntity;
+   @Field(() => String)
+   name: string;
 
-  @Load(() => [PhotoEntity], { key: "id", parentKey: "userId", handler: "LOAD_PHOTOS_BY_USER_ID" })
-  photos: PhotoEntity[];
-}`}
-							/>
-						</div>
+   @Field(() => Date)
+   createdAt: Date;
+
+   // One-to-one relationship with PhotoEntity
+   @Load<PhotoEntity, UserEntity>(() => PhotoEntity, { key: "id", parentKey: "userId", handler: "LOAD_PHOTOS_BY_USER_ID" })
+   photo: PhotoEntity;
+
+   // One-to-many relationship with PhotoEntity
+   @Load<PhotoEntity, UserEntity>(() => [PhotoEntity], { key: "id", parentKey: "userId", handler: "LOAD_PHOTOS_BY_USER_ID" })
+   photos: PhotoEntity[];
+  
+   // Many-to-many relationship with PhotoEntity
+   userPhotos: UserPhotoEntity[]; // intermediate table
+  
+   @Load<PhotoEntity, UserEntity>(() => [PhotoEntity], { key: "id", parentKey: "userPhotos.userId", handler: "LOAD_PHOTOS_BY_USER_ID" })
+   photosByUsers: PhotoEntity[];
+ }`}
+ 						/>
+ 					</div>
+
+ 					<ul className="list-disc pl-6 space-y-2">
+ 						<li>key: the field in the source entity that is used to batch and cache requests.</li>
+ 						<li>parentKey: the field in the parent entity that is used to identify the parent entity.</li>
+ 						<li>handler: the name of the handler that will be used to fetch the related data.</li>
+ 					</ul>
 					</section>
 
 					<section id="dataloader-handlers" className="space-y-4">
@@ -231,14 +260,35 @@ export class UserEntity {
 							<code>@DataloaderHandler</code> decorator.
 						</p>
 						<CodeBlock
-							filename="photo.service.ts"
-							code={`import { DataloaderHandler } from "nestjs-decorated-dataloaders";
-import { PhotoEntity } from "./photo.entity";
+							filename="photo.repository.ts"
+							code={`import { Inject, Injectable } from "@nestjs/common";
+import { DataloaderHandler } from "nestjs-decorated-dataloaders";
+import { PhotoEntity } from "../../entities/photo.entity";
+import { DatabaseService } from "../database/database.service";
 
-export class PhotoService {
-  @DataloaderHandler("LOAD_PHOTOS_BY_USER_ID")
-  async loadPhotosByUserIds(userIds: number[]): Promise<PhotoEntity[]> {
-    // Replace with actual data fetching logic
+// tip: define constants for handler keys in a separated file
+export const LOAD_PHOTOS_BY_USER = "LOAD_PHOTOS_BY_USER";
+
+@Injectable()
+export class PhotoRepository {
+  constructor(
+    @Inject(DatabaseService)
+    private readonly database: DatabaseService,
+  ) {}
+    
+  /**
+   * This method will be called by the dataloader with batched user IDs
+   */
+  @DataloaderHandler(LOAD_PHOTOS_BY_USER)
+  async findAllByUsersIds(usersIds: number[]): Promise<PhotoEntity[]> {
+    // Fetch all photos from some data source
+    const photos = await this.database.getPhotos({
+        where: {
+            userId: { in: usersIds }
+        }
+    });
+
+    return photos
   }
 }`}
 						/>
@@ -254,23 +304,31 @@ export class PhotoService {
 						</p>
 						<CodeBlock
 							filename="user.resolver.ts"
-							code={`import { Resolver, ResolveField, Parent } from "@nestjs/graphql";
+							code={`import { Inject } from "@nestjs/common";
+import { Parent, ResolveField, Resolver } from "@nestjs/graphql";
 import { DataloaderService } from "nestjs-decorated-dataloaders";
-import { UserEntity } from "./user.entity";
-import { PhotoEntity } from "./photo.entity";
+import { GroupEntity } from "../entities/group.entity";
+import { PhotoEntity } from "../entities/photo.entity";
+import { UserEntity } from "../entities/user.entity";
 
-@Resolver(UserEntity)
+@Resolver(() => UserEntity)
 export class UserResolver {
-  constructor(private readonly dataloaderService: DataloaderService) {}
-
-  @ResolveField(() => PhotoEntity)
-  async photo(@Parent() user: UserEntity) {
-    return this.dataloaderService.load({ from: UserEntity, field: "photo", data: user });
-  }
-
+  constructor(
+    @Inject(DataloaderService)
+    private readonly dataloaderService: DataloaderService,
+  ) {}
+    
+  /**
+   * This resolver field uses the dataloader to fetch photos for a user
+   * The dataloader will batch and cache requests for optimal performance
+   */
   @ResolveField(() => [PhotoEntity])
   async photos(@Parent() user: UserEntity) {
-    return this.dataloaderService.load({ from: UserEntity, field: "photos", data: user });
+    return this.dataloaderService.load({ 
+      from: UserEntity,
+      field: "photos",
+      data: user
+    });
   }
 }`}
 						/>
@@ -279,7 +337,7 @@ export class UserResolver {
 					<section id="advanced-concepts" className="space-y-8">
 						<h2 className="text-3xl font-bold">Advanced Concepts</h2>
 
-						<div id="function-based-mapping" className="space-y-4">
+      <div id="function-based-mapper" className="space-y-4">
 							<h3 className="text-2xl font-semibold">
 								Function-Based Mapper
 							</h3>
@@ -315,8 +373,8 @@ export class PostEntity {
    * This handles a many-to-many relationship through a join table
    */
   @Load(() => [CategoryEntity], {
-    key: (category) => category.id,
-    parentKey: (post) => post.categoryPosts.map((cp) => cp.postId),
+    key: (post) => post.categoryPosts.map((cp) => cp.postId),
+    parentKey: (category) => category.id,
     handler: "LOAD_CATEGORY_BY_POSTS",
   })
   categories: CategoryEntity[];

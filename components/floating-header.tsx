@@ -52,7 +52,7 @@ const data = {
 					url: "#dataloader-handlers",
 				},
 				{
-					title: "Usage in resolvers",
+					title: "Using Dataloaders in Resolvers",
 					url: "#using-dataloaders",
 				},
 			],
@@ -63,12 +63,24 @@ const data = {
 			icon: Settings,
 			items: [
 				{
+					title: "Function-Based Mapper",
+					url: "#function-based-mapper",
+				},
+				{
+					title: "Type Safety",
+					url: "#type-safety",
+				},
+				{
 					title: "Handling Circular Dependencies",
 					url: "#handling-circular-dependencies",
 				},
 				{
 					title: "Aliases",
 					url: "#aliases",
+				},
+				{
+					title: "Under the Hood",
+					url: "#under-the-hood",
 				},
 			],
 		},
