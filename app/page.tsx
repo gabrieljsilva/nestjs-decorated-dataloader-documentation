@@ -100,7 +100,10 @@ export default function Page() {
 								</h2>
 							</div>
 							<p className="text-sm sm:text-base leading-relaxed sm:leading-7">
-								A lightweight wrapper around Dataloader that lets you declare where to batch and cache instead of wiring it by hand. Add a @Load decorator to any field, register a handler, and the N+1 query problem is gone.
+								A lightweight wrapper around Dataloader that lets you declare
+								where to batch and cache instead of wiring it by hand. Add a
+								@Load decorator to any field, register a handler, and the N+1
+								query problem is gone.
 							</p>
 						</div>
 
@@ -145,9 +148,10 @@ export default function Page() {
 								Configure the <code>DataloaderModule</code> in your application
 								module:
 							</p>
-  					<CodeBlock
-  						filename="app.module.ts"
-  						code={`import { Module } from "@nestjs/common";
+							<CodeBlock
+								filename="app.module.ts"
+								code={`
+  import { Module } from "@nestjs/common";
   import { GraphQLModule } from "@nestjs/graphql";
   import { LRUMap } from "lru_map";
   import { DataloaderModule } from "nestjs-decorated-dataloaders";
@@ -166,21 +170,24 @@ export default function Page() {
     ],
   })
   export class AppModule {}`}
-  					/>
- 						<ul className="list-disc pl-6 space-y-2">
- 							<li>
- 								<strong>name</strong>: Names the dataloader for better tracking and debugging.
- 							</li>
- 							<li>
- 								<strong>cache</strong>: Enables caching.
- 							</li>
- 							<li>
- 								<strong>maxBatchSize</strong>: Limits the maximum number of batched requests.
- 							</li>
- 							<li>
- 								<strong>getCacheMap</strong>: Defines a custom cache implementation (e.g., LRU Cache).
- 							</li>
- 						</ul>
+							/>
+							<ul className="list-disc pl-6 space-y-2">
+								<li>
+									<strong>name</strong>: Names the dataloader for better
+									tracking and debugging.
+								</li>
+								<li>
+									<strong>cache</strong>: Enables caching.
+								</li>
+								<li>
+									<strong>maxBatchSize</strong>: Limits the maximum number of
+									batched requests.
+								</li>
+								<li>
+									<strong>getCacheMap</strong>: Defines a custom cache
+									implementation (e.g., LRU Cache).
+								</li>
+							</ul>
 						</div>
 					</section>
 
@@ -189,9 +196,10 @@ export default function Page() {
 
 						<div className="space-y-4">
 							<h3 className="text-2xl font-semibold">PhotoEntity</h3>
- 						<CodeBlock
- 							filename="photo.entity.ts"
- 							code={`import { Field, Int, ObjectType } from "@nestjs/graphql";
+							<CodeBlock
+								filename="photo.entity.ts"
+								code={`
+ import { Field, Int, ObjectType } from "@nestjs/graphql";
  import { Load } from "nestjs-decorated-dataloaders";
  import { UserEntity } from "./user.entity";
 
@@ -206,14 +214,15 @@ export default function Page() {
    @Field(() => Number)
    userId: number;
  }`}
- 						/>
- 					</div>
+							/>
+						</div>
 
 						<div className="space-y-4">
 							<h3 className="text-2xl font-semibold">UserEntity</h3>
- 						<CodeBlock
- 							filename="user.entity.ts"
- 							code={`import { Field, Int, ObjectType } from "@nestjs/graphql";
+							<CodeBlock
+								filename="user.entity.ts"
+								code={`
+ import { Field, Int, ObjectType } from "@nestjs/graphql";
  import { Load } from "nestjs-decorated-dataloaders";
  import { PhotoEntity } from "./photo.entity";
 
@@ -242,14 +251,23 @@ export default function Page() {
    @Load<PhotoEntity, UserEntity>(() => [PhotoEntity], { key: "id", parentKey: "userPhotos.userId", handler: "LOAD_PHOTOS_BY_USER_ID" })
    photosByUsers: PhotoEntity[];
  }`}
- 						/>
- 					</div>
+							/>
+						</div>
 
- 					<ul className="list-disc pl-6 space-y-2">
- 						<li>key: the field in the source entity that is used to batch and cache requests.</li>
- 						<li>parentKey: the field in the parent entity that is used to identify the parent entity.</li>
- 						<li>handler: the name of the handler that will be used to fetch the related data.</li>
- 					</ul>
+						<ul className="list-disc pl-6 space-y-2">
+							<li>
+								key: the field in the source entity that is used to batch and
+								cache requests.
+							</li>
+							<li>
+								parentKey: the field in the parent entity that is used to
+								identify the parent entity.
+							</li>
+							<li>
+								handler: the name of the handler that will be used to fetch the
+								related data.
+							</li>
+						</ul>
 					</section>
 
 					<section id="dataloader-handlers" className="space-y-4">
@@ -261,7 +279,8 @@ export default function Page() {
 						</p>
 						<CodeBlock
 							filename="photo.repository.ts"
-							code={`import { Inject, Injectable } from "@nestjs/common";
+							code={`
+import { Inject, Injectable } from "@nestjs/common";
 import { DataloaderHandler } from "nestjs-decorated-dataloaders";
 import { PhotoEntity } from "../../entities/photo.entity";
 import { DatabaseService } from "../database/database.service";
@@ -304,7 +323,8 @@ export class PhotoRepository {
 						</p>
 						<CodeBlock
 							filename="user.resolver.ts"
-							code={`import { Inject } from "@nestjs/common";
+							code={`
+import { Inject } from "@nestjs/common";
 import { Parent, ResolveField, Resolver } from "@nestjs/graphql";
 import { DataloaderService } from "nestjs-decorated-dataloaders";
 import { GroupEntity } from "../entities/group.entity";
@@ -337,16 +357,19 @@ export class UserResolver {
 					<section id="advanced-concepts" className="space-y-8">
 						<h2 className="text-3xl font-bold">Advanced Concepts</h2>
 
-      <div id="function-based-mapper" className="space-y-4">
-							<h3 className="text-2xl font-semibold">
-								Function-Based Mapper
-							</h3>
+						<div id="function-based-mapper" className="space-y-4">
+							<h3 className="text-2xl font-semibold">Function-Based Mapper</h3>
 							<p>
-								Function-Based Mapper allows you to use functions instead of string paths for the <code>key</code> and <code>parentKey</code> properties in the <code>@Load</code> decorator. This is particularly useful when you need to work with composite keys or when you need more complex mapping logic.
+								Function-Based Mapper allows you to use functions instead of
+								string paths for the <code>key</code> and <code>parentKey</code>{" "}
+								properties in the <code>@Load</code> decorator. This is
+								particularly useful when you need to work with composite keys or
+								when you need more complex mapping logic.
 							</p>
 							<CodeBlock
 								filename="post.entity.ts"
-								code={`import { Field, Int, ObjectType } from "@nestjs/graphql";
+								code={`
+import { Field, Int, ObjectType } from "@nestjs/graphql";
 import { Load } from "nestjs-decorated-dataloaders";
 import { CategoryPostEntity } from "./category-post.entity";
 import { CategoryEntity } from "./category.entity";
@@ -380,33 +403,39 @@ export class PostEntity {
   categories: CategoryEntity[];
 }`}
 							/>
-							<h4 className="text-xl font-semibold">Benefits of Function-Based Mapper</h4>
+							<h4 className="text-xl font-semibold">
+								Benefits of Function-Based Mapper
+							</h4>
 							<ul className="list-disc pl-6 space-y-2">
 								<li>
-									<strong>Complex Mapping</strong>: You can implement complex mapping logic that goes beyond simple property access.
+									<strong>Complex Mapping</strong>: You can implement complex
+									mapping logic that goes beyond simple property access.
 								</li>
 								<li>
-									<strong>Composite Keys</strong>: You can create composite keys by combining multiple fields.
+									<strong>Composite Keys</strong>: You can create composite keys
+									by combining multiple fields.
 								</li>
 								<li>
-									<strong>Flexibility</strong>: You can use any JavaScript expression to compute the key.
+									<strong>Flexibility</strong>: You can use any JavaScript
+									expression to compute the key.
 								</li>
 								<li>
-									<strong>Performance</strong>: Function-based mappers are more CPU efficient compared to string-based mappers.
+									<strong>Performance</strong>: Function-based mappers are more
+									CPU efficient compared to string-based mappers.
 								</li>
 							</ul>
 						</div>
 
 						<div id="type-safety" className="space-y-4">
-							<h3 className="text-2xl font-semibold">
-								Type Safety
-							</h3>
+							<h3 className="text-2xl font-semibold">Type Safety</h3>
 							<p>
-								You can use TypeScript generics to ensure type safety when declaring a Dataloader field.
+								You can use TypeScript generics to ensure type safety when
+								declaring a Dataloader field.
 							</p>
 							<CodeBlock
 								filename="user.entity.ts"
-								code={`import { Field, Int, ObjectType } from "@nestjs/graphql";
+								code={`
+import { Field, Int, ObjectType } from "@nestjs/graphql";
 import { Load } from "nestjs-decorated-dataloaders";
 import { PhotoEntity } from "./photo.entity";
 
@@ -430,7 +459,9 @@ export class UserEntity {
 }`}
 							/>
 							<p>
-								In this example, the <code>key</code> function is typed to receive a <code>UserEntity</code> and the <code>parentKey</code> function is typed to receive a <code>PhotoEntity</code>.
+								In this example, the <code>key</code> function is typed to
+								receive a <code>UserEntity</code> and the <code>parentKey</code>{" "}
+								function is typed to receive a <code>PhotoEntity</code>.
 							</p>
 						</div>
 
@@ -470,13 +501,14 @@ export class UserEntity {
 							</p>
 							<CodeBlock
 								filename="entities.ts"
-								code={`import { Relation } from 'nestjs-decorated-dataloaders';
+								code={`
+import { Relation } from 'nestjs-decorated-dataloaders';
 
-class User {
+export class User {
   photo: Relation<Photo>;
 }
 
-class Photo {
+export class Photo {
   user: Relation<User>;
 }`}
 							/>
@@ -535,7 +567,8 @@ class Photo {
 							<h4 className="text-xl font-semibold">Using Aliases</h4>
 							<CodeBlock
 								filename="photo.service.ts"
-								code={`@AliasFor(() => AbstractPhotoService)
+								code={`
+@AliasFor(() => AbstractPhotoService)
 export class ConcretePhotoService {}`}
 							/>
 							<p>
